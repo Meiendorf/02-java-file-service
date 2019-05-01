@@ -1,5 +1,6 @@
 package tech.becoming.fileservice.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -8,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import tech.becoming.fileservice.entity.File;
+import tech.becoming.fileservice.helper.FileHelper;
 import tech.becoming.fileservice.repository.FileRepository;
 import tech.becoming.fileservice.service.FileService;
 
@@ -18,6 +20,9 @@ import java.io.IOException;
 public class FileController {
 
     private final FileService fileService;
+
+    @Autowired
+    private FileHelper fileHelper;
 
     public FileController(FileService fileService) {
         this.fileService = fileService;
@@ -50,15 +55,9 @@ public class FileController {
     public ResponseEntity<Resource> downloadFile(@PathVariable String id) {
         final File file = fileService.findById(id);
 
-        return createDownloadResponse(file);
+        return fileHelper.createDownloadResponse(file);
     }
 
-    private ResponseEntity<Resource> createDownloadResponse(File file) {
-        return ResponseEntity
-                .ok()
-                .contentType(MediaType.APPLICATION_OCTET_STREAM)
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFileName() + "\"")
-                .body(new ByteArrayResource(file.getData()));
-    }
+
 
 }

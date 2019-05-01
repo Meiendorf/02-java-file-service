@@ -1,5 +1,6 @@
 package tech.becoming.fileservice.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.Entity;
@@ -20,6 +21,7 @@ public class File {
     private String fileName;
 
     @Lob
+    @JsonIgnore
     private byte[] data;
 
     public String getId() {

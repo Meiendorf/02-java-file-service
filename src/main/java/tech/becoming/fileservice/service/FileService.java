@@ -28,8 +28,6 @@ public class FileService {
                 .findById(id)
                 .orElseThrow(NotFoundException::new);
 
-        file.setData(null);
-
         return file;
     }
 
